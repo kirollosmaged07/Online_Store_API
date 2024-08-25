@@ -7,4 +7,6 @@ import java.util.List;
 public interface OrderService {
     public ResponseEntity<Order> addOrder(Order order);
     public ResponseEntity<List<Order>> getByCustomerId(Long customerId);
+    public ResponseEntity<List<Order>> getOrderById(Long orderId);
 }
+

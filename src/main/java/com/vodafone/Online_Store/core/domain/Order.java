@@ -1,4 +1,5 @@
 package com.vodafone.Online_Store.core.domain;
+import com.vodafone.Online_Store.core.domain.UserInfo;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,3 +37,5 @@ public class Order {
     )
     private Set<Product> products = new HashSet<>();
 }
+
+

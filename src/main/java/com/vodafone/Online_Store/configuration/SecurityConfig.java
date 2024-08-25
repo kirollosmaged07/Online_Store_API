@@ -38,10 +38,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationProvider authenticationProvider, UserInfoService userInfoService) throws Exception {
         return http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/auth/generateToken", "/auth/register").permitAll()
+                        .requestMatchers("/auth/generateToken", "/auth/register","/order/**","api/products","auth/register").permitAll()
                         .requestMatchers("/auth/hello").authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

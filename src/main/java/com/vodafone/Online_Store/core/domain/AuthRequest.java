@@ -33,7 +33,7 @@ public class AuthRequest {
 
         @ManyToOne
         @JoinColumn(name = "user_id") // Foreign key column for the User entity
-        private User user;
+        private UserInfo user;
 
         @ManyToMany
         @JoinTable(

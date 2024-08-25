@@ -23,6 +23,12 @@ public class OrderServiceImpl implements OrderService {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
+
+    public ResponseEntity <List<Order>>getOrderById(Long orderId) {
+        List<Order> order = orderRepository.findOrderById(orderId);
+        return new ResponseEntity<>(order, HttpStatus.OK);
+    }
+
     public ResponseEntity<Order> addOrder(Order order) {
         orderRepository.save(order);
         return new ResponseEntity<>(order, HttpStatus.CREATED);

@@ -15,8 +15,13 @@ public class OrderController {
     private OrderServiceImpl orderService;
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<List<Order>> getOrderByCustomer(@PathVariable long id) {
-        return orderService.getByCustomerId(id);
+    public ResponseEntity<List<Order>> getOrderById(@PathVariable long id) {
+        return orderService.getOrderById(id);
+    }
+
+    @GetMapping("/order")
+    public ResponseEntity<List<Order>> getOrderByCustomer(@RequestParam Long customerId) {
+        return orderService.getByCustomerId(customerId);
     }
 
     @PostMapping("/order")
