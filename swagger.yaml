@@ -1,0 +1,426 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.7"
+  title: "Online Shop"
+host: "localhost:8080"
+basePath: "/"
+schemes:
+  - "https"
+
+tags:
+  - name: "User"
+  - name: "Order"
+  - name: "Product"
+
+
+paths:
+  # /auth/register:
+  #   post:
+  #     tags:
+  #     - "User"
+  #     description: ""
+  #     operationId: "reg"
+  #     consumes:
+  #     - "multipart/form-data"
+  #     produces:
+  #     - "application/json"
+  #     parameters:
+  #     - name: "body"
+  #       in: "body"
+  #       required: true
+  #       schema:
+  #         $ref: "#/definitions/User"
+  #     responses:
+  #       200:
+  #         description: "successful operation"
+
+  /order:
+    post:
+      tags:
+        - "Order"
+      summary: "Add a new order"
+      description: ""
+      operationId: "addOrder"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/OrderCreate"
+      responses:
+        200:
+          description: "successful operation"
+
+
+    get:
+      tags:
+        - "Order"
+      summary: "Finds order"
+
+      operationId: "findOrder"
+      parameters:
+        - name: "userId"
+          in: "query"
+          required: false
+          type: "integer"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        400:
+          description: "Invalid value"
+
+
+  /order/{orderId}:
+    put:
+      tags:
+        - "Order"
+      summary: "Update order"
+
+      operationId: "updateOrder"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "orderId"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          schema:
+            $ref: "#/definitions/Order"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            items:
+              $ref: "#/definitions/Order"
+        400:
+          description: "Invalid value"
+    get:
+      tags:
+        - "Order"
+      summary: "Get specific order"
+
+      operationId: "getord"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "orderId"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        400:
+          description: "Invalid value"
+
+
+  /product:
+    get:
+      tags:
+        - "Product"
+      summary: "Find all products"
+      operationId: "getProducts"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+
+
+    post:
+      tags:
+        - "Product"
+      summary: "Insert new Product"
+      operationId: "product"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          schema:
+            $ref: "#/definitions/Product"
+          required: true
+      responses:
+        200:
+          description: "Product Created"
+
+        405:
+          description: "Invalid input"
+
+
+
+  /product/{productId}:
+    put:
+      tags:
+        - "Product"
+      summary: "Update an existing Product"
+      operationId: "updateProduct"
+      parameters:
+        - name: "productId"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        '200':
+          description: "Product successfully updated"
+          schema:
+            $ref: "#/definitions/Product"
+        '404':
+          description: "Product not found"
+
+    delete:
+      tags:
+        - "Product"
+      summary: "Delete a Product"
+      operationId: "deleteProduct"
+      parameters:
+        - name: "productId"
+          in: "path"
+          required: true
+          type: "integer"
+          description: "ID of the product to delete"
+      responses:
+        '204':
+          description: "Product successfully deleted"
+        '404':
+          description: "Product not found"
+
+  /register:
+    post:
+      tags:
+        - "User"
+      summary: "Register a new user"
+      operationId: "addNewUser"
+      parameters:
+        - in: "body"
+          name: "body"
+          schema:
+            $ref: "#/definitions/UserInfo"
+      responses:
+        '201':
+          description: "User registered successfully"
+        '400':
+          description: "Invalid input data"
+
+        '500':
+          description: "Internal server error"
+
+  /generateToken:
+    post:
+      tags:
+        - "User"
+      summary: "Authenticate a user and generate a JWT token"
+      operationId: "authenticateAndGetToken"
+      parameters:
+        - in: "body"
+          name: "body"
+          schema:
+            $ref: "#/definitions/AuthRequest"
+      responses:
+        '200':
+          description: "Authentication successful, returns JWT token"
+
+        '403':
+          description: "Authentication failed due to invalid credentials"
+
+        '500':
+          description: "Internal server error"
+
+          # /user/login:
+          #   get:
+          #     tags:
+          #     - "user"
+          #     summary: "Logs user into the system"
+          #     description: ""
+          #     operationId: "loginUser"
+          #     produces:
+          #     - "application/json"
+          #     - "application/xml"
+          #     parameters:
+          #     - name: "username"
+          #       in: "query"
+          #       description: "The user name for login"
+          #       required: true
+          #       type: "string"
+          #     - name: "password"
+          #       in: "query"
+          #       description: "The password for login in clear text"
+          #       required: true
+          #       type: "string"
+          #     responses:
+          #       200:
+          #         description: "successful operation"
+          #         headers:
+          #           X-Expires-After:
+          #             type: "string"
+          #             format: "date-time"
+          #             description: "date in UTC when token expires"
+          #           X-Rate-Limit:
+          #             type: "integer"
+          #             format: "int32"
+          #             description: "calls per hour allowed by the user"
+          #         schema:
+          #           type: "string"
+          #       400:
+          #         description: "Invalid username/password supplied"
+
+
+
+
+
+  # /user/logout:
+  #   get:
+  #     tags:
+  #     - "user"
+  #     summary: "Logs out current logged in user session"
+  #     description: ""
+  #     operationId: "logoutUser"
+  #     produces:
+  #     - "application/json"
+  #     - "application/xml"
+  #     parameters: []
+  #     responses:
+  #       default:
+  #         description: "successful operation"
+
+  # /user:
+  #   post:
+  #     tags:
+  #     - "user"
+  #     summary: "Create user"
+  #     description: "This can only be done by the logged in user."
+  #     operationId: "createUser"
+  #     consumes:
+  #     - "application/json"
+  #     produces:
+  #     - "application/json"
+  #     - "application/xml"
+  #     parameters:
+  #     - in: "body"
+  #       name: "body"
+  #       description: "Created user object"
+  #       required: true
+  #       schema:
+  #         $ref: "#/definitions/User"
+  #     responses:
+  #       default:
+  #         description: "successful operation"
+
+definitions:
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+
+  AuthRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+      role:
+        type: "string"
+
+  UserInfo:
+    type: "object"
+    properties:
+
+      username:
+        type: "string"
+      password:
+        type: "string"
+      email:
+        type: "string"
+      role:
+        type: "string"
+  Product:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      price:
+        type: "integer"
+        format: "int64"
+      description:
+        type: "string"
+      category:
+        type: "string"
+    xml:
+      name: "Product"
+
+
+
+  OrderCreate:
+    type: "object"
+    properties:
+      userId:
+        type: "integer"
+        format: "int64"
+      productIds:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+
+
+  Order:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+
+      Product:
+        $ref: "#/definitions/Product"
+    xml:
+      name: "Order"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+
+    xml:
+      name: "User"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
