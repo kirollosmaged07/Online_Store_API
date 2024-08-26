@@ -1,38 +1,38 @@
 package com.vodafone.Online_Store.core.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import com.vodafone.Online_Store.core.domain.UserInfo;
 import com.vodafone.Online_Store.infrastructure.repository.UserInfoRepository;
-import com.vodafone.Online_Store.core.domain.UserInfoDetails;
-
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Service
 public class UserInfoService implements UserDetailsService {
-    private final UserInfoRepository repository;
-    private final PasswordEncoder encoder;
 
-    public UserInfoService(UserInfoRepository repository, PasswordEncoder encoder) {
-        this.repository = repository;
-        this.encoder = encoder;
-    }
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserInfo> userDetail = repository.findByUsername(username);
-        return userDetail.map(UserInfoDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
+    public UserInfo loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userInfoRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public String addUser(UserInfo userInfo) {
-        userInfo.setPassword(encoder.encode(userInfo.getPassword()));
-        repository.save(userInfo);
-        return "User Added Successfully";
+    public String registerUser(UserInfo user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userInfoRepository.save(user);
+        String role = user.getRole();
+        String jwtToken = jwtService.generateTokenWithRoles(user.getUsername(), role);
+        return jwtToken;
     }
 
-
+    // Other service methods
 }

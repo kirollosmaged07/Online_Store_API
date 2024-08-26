@@ -13,7 +13,7 @@ import com.vodafone.Online_Store.core.service.JwtService;
 import com.vodafone.Online_Store.core.service.UserInfoService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping
 public class UserController {
     private final UserInfoService service;
     private final JwtService jwtService;
@@ -27,8 +27,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> addNewUser(@RequestBody UserInfo userInfo) {
-        String response = service.addUser(userInfo);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        service.registerUser(userInfo);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
     }
 
     @PostMapping("/generateToken")
