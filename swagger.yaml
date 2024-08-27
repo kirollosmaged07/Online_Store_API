@@ -60,7 +60,7 @@ paths:
     get:
       tags:
         - "Order"
-      summary: "Finds order"
+      summary: "Finds orders"
 
       operationId: "findOrder"
       parameters:
@@ -107,26 +107,7 @@ paths:
               $ref: "#/definitions/Order"
         400:
           description: "Invalid value"
-    get:
-      tags:
-        - "Order"
-      summary: "Get specific order"
 
-      operationId: "getord"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "orderId"
-          in: "path"
-          required: true
-          type: "integer"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid value"
 
 
   /product:
