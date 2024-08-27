@@ -2,6 +2,7 @@ package com.vodafone.Online_Store.core.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
@@ -22,9 +23,11 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo user;
 
+    @Getter
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
     private String status;
+
 }
 

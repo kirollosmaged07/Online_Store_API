@@ -1,8 +1,8 @@
 package com.vodafone.Online_Store.web.controller;
 
 import com.vodafone.Online_Store.core.domain.Order;
+import com.vodafone.Online_Store.core.domain.OrderItem;
 import com.vodafone.Online_Store.core.domain.OrderRequest;
-import com.vodafone.Online_Store.core.domain.UserInfo;
 import com.vodafone.Online_Store.core.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,11 +22,12 @@ public class OrderController {
 
     private final OrderService orderService;
 
-
     @PostMapping
-    public ResponseEntity<Order> placeOrder(@RequestBody OrderRequest orderRequest) {
+    public ResponseEntity<List<OrderItem>> placeOrder(@RequestBody OrderRequest orderRequest) {
+        // Place the order using the service layer
         Order order = orderService.placeOrder(orderRequest);
-        return ResponseEntity.ok(order);
+        // Return only the items from the order in the response
+        return ResponseEntity.ok(order.getItems());
     }
 
     @GetMapping
